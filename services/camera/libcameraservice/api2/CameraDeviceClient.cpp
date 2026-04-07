@@ -105,11 +105,16 @@ CameraDeviceClient::CameraDeviceClient(
       mOriginalCameraId(originalCameraId),
       mIsVendorClient(isVendorClient) {
 
-    std::vector<std::string> privilegedClientList = android::base::Split(
-            android::base::GetProperty("persist.vendor.camera.privapp.list", ""), ",");
-    auto it = std::find(privilegedClientList.begin(), privilegedClientList.end(),
-            getPackageName());
-    mPrivilegedClient = it != privilegedClientList.end();
+    if (getPackageName() == "com.google.android.GoogleCamera" ||
+            getPackageName() == "org.lineageos.aperture") {
+        mPrivilegedClient = true;
+    } else {
+        std::vector<std::string> privilegedClientList = android::base::Split(
+                android::base::GetProperty("persist.vendor.camera.privapp.list", ""), ",");
+        auto it = std::find(privilegedClientList.begin(), privilegedClientList.end(),
+                getPackageName());
+        mPrivilegedClient = it != privilegedClientList.end();
+    }
 
     ATRACE_CALL();
     ALOGV("CameraDeviceClient %s: Opened", cameraId.c_str());

@@ -123,7 +123,7 @@ cc_defaults {
             "unsigned-integer-overflow",
             "signed-integer-overflow",
         ],
-        cfi: true,
+        cfi: false,
     },
 }
 
@@ -143,10 +143,7 @@ cc_defaults {
     name: "libcodec2_soft_sanitize_cfi-defaults",
 
     sanitize: {
-        cfi: true,
-        config: {
-            cfi_assembly_support: true,
-        },
+        cfi: false,
     },
 }
 
